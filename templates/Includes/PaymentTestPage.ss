@@ -17,7 +17,9 @@
         <th>Method</th>
         <th>Status</th>
         <th>Amount</th>
-        <th>Gateway Error Codes</th>
+        <th>Currency</th>
+        <th>Gateway Error Code</th>
+        <th>Gateway Error Message</th>
         <th>Gateway Message</th>
         <th>Gateway HTTP Response Status</th>
       </tr>
@@ -26,8 +28,10 @@
       <tr>
         <td>$Method</td>
         <td>$Status</td>
-        <td>$Amount.Nice</td>
-        <td>$ErrorCodes</td>
+        <td>$Amount.Amount</td>
+        <td>$Amount.Currency</td>
+        <td>$ErrorCode</td>
+        <td>$ErrorMessage</td>
         <td>$Message</td>
         <td>$HTTPStatus</td>
       </tr>
