@@ -10,6 +10,7 @@
 ## Requirements
 -------------------
 * SilverStripe 3.0
+* SilverStripe Payment 
 
 ## Documentation
 -------------------
