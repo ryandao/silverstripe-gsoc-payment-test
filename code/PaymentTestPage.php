@@ -13,9 +13,9 @@ class PaymentTestPage extends Page {
 class PaymentTestPage_Controller extends Page_Controller {
 
   function index() {
-    return array( 
-       'Content' => $this->Content, 
-       'Form' => $this->ProcessForm() 
+    return array(
+       'Content' => $this->Content,
+       'Form' => $this->ProcessForm()
     );
   }
 
@@ -35,20 +35,20 @@ class PaymentTestPage_Controller extends Page_Controller {
     }
 
     $fields->push(new DropDownField(
-      'PaymentMethod', 
-      'Select Payment Method', 
+      'PaymentMethod',
+      'Select Payment Method',
       $source
     ));
 
     $actions = new FieldList(
       new FormAction('proceed', 'Proceed')
     );
-    
+
     $processForm = new Form($this, 'ProcessForm', $fields, $actions);
     $processForm->disableSecurityToken();
     return $processForm;
   }
-  
+
   function proceed($data, $form) {
 
     if (isset($data['PaymentMethod'])) Session::set('PaymentMethod', $data['PaymentMethod']);
@@ -58,44 +58,43 @@ class PaymentTestPage_Controller extends Page_Controller {
       'Form' => $this->OrderForm()
     );
   }
-  
-  function OrderForm() {
 
+  function OrderForm() {
     $paymentMethod = Session::get('PaymentMethod');
 
     try {
       $processor = PaymentFactory::factory($paymentMethod);
-    } 
+    }
     catch (Exception $e) {
       $fields = new FieldList(array(new ReadonlyField($e->getMessage())));
       $actions = new FieldList();
       return new Form($this, 'OrderForm', $fields, $actions);
     }
-    
+
     $fields = $processor->getFormFields();
     $fields->push(new HiddenField('PaymentMethod', 'PaymentMethod', $paymentMethod));
-    
+
     $actions = new FieldList(
-      new FormAction('processOrder', 'Process Order')  
-    ); 
+      new FormAction('processOrder', 'Process Order')
+    );
 
     $validator = $processor->getFormRequirements();
 
     return new Form($this, 'OrderForm', $fields, $actions, $validator);
   }
-  
+
   /**
    * Process order
    */
   function processOrder($data, $form) {
     $paymentMethod = $data['PaymentMethod'];
-    
+
     try {
       $paymentProcessor = PaymentFactory::factory($paymentMethod);
-    } 
+    }
     catch (Exception $e) {
       return array(
-        'Content' => $e->getMessage() 
+        'Content' => $e->getMessage()
       );
     }
 
@@ -103,7 +102,7 @@ class PaymentTestPage_Controller extends Page_Controller {
 
       $paymentProcessor->setRedirectURL($this->link() . 'completed');
       $paymentProcessor->capture($data);
-    } 
+    }
     catch (Exception $e) {
 
       //This is where we catch gateway validation or gateway unreachable errors
@@ -120,9 +119,9 @@ class PaymentTestPage_Controller extends Page_Controller {
       );
     }
   }
-  
+
   /**
-   * Show a page after a payment is completed 
+   * Show a page after a payment is completed
    */
   function completed() {
 
