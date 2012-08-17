@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * A page to test payment API from form creation and submission
+ * to payment processing. Also refer to this code for sample usage of the API
+ */
 class PaymentTestPage extends Page {
 
   /**
@@ -20,7 +24,7 @@ class PaymentTestPage_Controller extends Page_Controller {
   }
 
   /**
-   * Get the order form for processing a dummy payment
+   * Show the "choose payment method" form
    */
   function ProcessForm() {
     $fields = new FieldList;
@@ -49,6 +53,10 @@ class PaymentTestPage_Controller extends Page_Controller {
     return $processForm;
   }
 
+  /**
+   * Proceed after the user has chosen the desired payment method.
+   * Show the payment form.
+   */
   function proceed($data, $form) {
 
     if (isset($data['PaymentMethod'])) Session::set('PaymentMethod', $data['PaymentMethod']);
@@ -59,6 +67,9 @@ class PaymentTestPage_Controller extends Page_Controller {
     );
   }
 
+  /**
+   * Retrieve the payment form using the API
+   */
   function OrderForm() {
     $paymentMethod = Session::get('PaymentMethod');
 
